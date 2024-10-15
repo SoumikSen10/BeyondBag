@@ -1,13 +1,32 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
+const config = require("config");
+
+const debug = require("debug")("development:mongoose");
 
 const dbname = "beyondBagDB";
 mongoose
-  .connect(`mongodb://127.0.0.1:27017/${dbname}`)
+  .connect(`${config.get("MONGODB_URI")}/${dbname}`)
   .then(() => {
-    console.log("Connection established!");
+    debug("Connection established!");
   })
   .catch((err) => {
-    console.log(`ERROR:${err}`);
+    debug(`ERROR:${err}`);
   });
 
 module.exports = mongoose.connection;
+
+/*
+
+Go to terminal and run the command :-
+
+set DEBUG=development:*
+
+After that debugger starts. Hence we donot need to use console.log() for debugging much and can push this code directly.
+
+Also to stop the debugger, go to the terminal and run the command :-
+
+set DEBUG=
+
+and debugger gets removed
+
+*/
